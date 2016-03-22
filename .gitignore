@@ -1,0 +1,5 @@
+example_project/example_project/media
+example_project/example_project/static
+*.swp
+*.pyc
+local_settings.py
