@@ -5,8 +5,8 @@ from .models import ShortURL
 
 
 class ShortURLForm(forms.ModelForm):
-    redirect = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Enter a URL'}))
-    path = forms.URLField(required=False, widget=forms.URLInput(attrs={'placeholder': 'short-url'}))
+    redirect = forms.URLField(required=True, widget=forms.URLInput(attrs={'placeholder': 'Enter a URL'}))
+    path = forms.SlugField(required=False, widget=forms.TextInput(attrs={'placeholder': 'short-url'}))
 
     class Meta:
         model = ShortURL
