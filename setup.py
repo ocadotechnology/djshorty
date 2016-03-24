@@ -12,7 +12,7 @@ test_dependencies=[
 ]
 
 setup(
-    name='shorty',
+    name='djshorty',
     version=__VERSION__,
     description='A Django URL shortening app',
     author='Ben Cardy',
