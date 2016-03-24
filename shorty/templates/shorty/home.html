@@ -40,6 +40,10 @@
 
         new Clipboard('.clipboard.button');
 
+        {% if request.previous_short_urls %}
+        $('#id_override_existing').val('1');
+        {% endif %}
+
     });
 
 </script>
@@ -54,10 +58,26 @@
 
         <form method='post' style='margin: 2em 0;'>
             <div class='row collapse'>
-                <div class='columns small-10'>
+                <div class='columns'>
                     <h2>Shorten a URL</h2>
                 </div>
             </div>
+            {% if request.previous_short_urls %}
+            <div class='row collapse'>
+                <div class='columns'>
+                    <div class='panel callout alert'>
+                        <p><i class='fi-alert'></i> That URL has already been shortened to:</p>
+                        <ul>
+                            {% for url in request.previous_short_urls %}
+                                <li><a href='{% build_short_url url.path %}'>{% build_short_url url.path %}</a> </li>
+                            {% endfor %}
+                        </ul>
+                        <p>Are you sure you wish to create a new short URL?</p>
+                        <input type='submit' class='button postfix expand' value='Yes, create a new short URL.' />
+                    </div>
+                </div>
+            </div>
+            {% endif %}
             <div class='row collapse'>
                 <div class='columns form-wrapper'>
                     {% foundation_form form collapse_container=True %}
