@@ -1,0 +1,131 @@
+{% extend 'nuit/base.html' topbar=True %}
+{% load shorty %}
+
+{% block css %}
+
+<style>
+
+    td.icon, th.icon {
+        width: 1em;
+    }
+
+    .icon.button {
+        margin-bottom: 0;
+        padding: 0.3rem 0.5rem;
+        opacity: 0.7;
+    }
+
+    .icon.button:hover {
+        opacity: 1;
+    }
+
+    span.prefix {
+        text-align: right;
+        padding-right: 0.5em;
+    }
+
+</style>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.8/clipboard.min.js'></script>
+
+<script type='text/javascript'>
+
+    $(document).ready(function() {
+
+        $('#id_redirect').focus();
+
+        new Clipboard('.clipboard.button');
+
+    });
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class='row'>
+
+    <div class='columns small-12 medium-6 medium-push-3'>
+
+        <form method='post' style='margin: 2em 0;'>
+            <div class='row collapse'>
+                <div class='columns small-10'>
+                    <h2>Shorten a URL</h2>
+                </div>
+            </div>
+            <div class='row collapse'>
+                <div class='columns form-wrapper'>
+                    {% foundation_form form collapse_container=True %}
+                        redirect {'show_label': False}
+                        path {'show_label': False, 'prefix': '{{redirect_base}}', 'prefix_small': 6}
+                    {% end_foundation_form %}
+                </div>
+            </div>
+            <div class='row'>
+                <div class='columns'>
+                    <input type='submit' class='button postfix expand' value='Shorten' />
+                </div>
+            </div>
+        </form>
+
+        {% if path %}
+            <div class='alert-box success'>Your URL has been shortened!</div>
+            <div class='row collapse'>
+                <div class='columns small-11'>
+                    <input type='text' value='{{path}}' id='id_url' />
+                </div>
+                <div class='columns small-1'>
+                    <button class='clipboard button postfix' data-clipboard-target='#id_url' data-tooltip title='Copy to clipboard'><i class='fi-paperclip'></i></button>
+                </div>
+            </div>
+            <br />
+        {% endif %}
+
+        {% if request.user.short_urls.exists %}
+        <table style='width: 100%'>
+            <thead>
+                <tr>
+                    <th colspan='2'>Short URL</th>
+                    <th>Created</th>
+                    <th class='icon'>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for url in short_urls %}
+                <tr>
+                    <td class='icon'>
+                        <button class='clipboard icon tiny radius button' data-clipboard-text='{% build_short_url url.path %}' data-tooltip title='Copy to clipboard'><i class='fi-paperclip'></i></button>
+                    </td>
+                    <td>
+                        <a href='{% url 'redirect' slug=url.path %}'>{% build_short_url url.path %}</a>
+                        <br /><small>{{url.redirect}}</small>
+                    </td>
+                    <td>
+                        {{url.created|date:'d/m/Y'}} {{url.created|time:'H:i'}}
+                    </td>
+                    <td class='icon'>
+                        <form method='post' action='{% url 'delete' %}'>
+                            {% csrf_token %}
+                            <input type='hidden' name='id_short_url' value='{{url.pk}}' />
+                            <button class='icon tiny radius button alert delete'><i class='fi-x'></i></button>
+                    </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% pagination_menu short_urls %}
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

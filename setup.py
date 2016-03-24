@@ -4,6 +4,8 @@ from shorty.version import __VERSION__
 
 dependencies=[
     'django',
+    'django-autoconfig',
+    'django-nuit',
 ]
 test_dependencies=[
     'django-setuptest',

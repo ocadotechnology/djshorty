@@ -48,6 +48,7 @@ STATICFILES_DIRS = [
 SECRET_KEY = 'NOT-A-SECRET'
 
 ROOT_URLCONF = 'django_autoconfig.autourlconf'
+APPEND_SLASHES = False
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'example_project.wsgi.application'
