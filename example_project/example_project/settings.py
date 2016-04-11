@@ -36,14 +36,6 @@ STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media/media')
-
-MEDIA_URL = '/static/media/'
-
-STATICFILES_DIRS = [
-    os.path.join(os.path.dirname(__file__), 'media'),
-]
-
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'NOT-A-SECRET'
 
