@@ -20,13 +20,15 @@ def random_slug():
 
 
 class ShortURL(models.Model):
-    path = models.SlugField(unique=True)
+    path = models.SlugField(unique=True, error_messages={'unique': 'This short URL is already in use; please choose something different, or leave blank for a random URL',})
     redirect = models.URLField()
     user = models.ForeignKey(User, related_name='short_urls')
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ('-created', )
+        verbose_name = 'Short URL'
+        verbose_name_plural = 'Short URLs'
 
     def __unicode__(self):
         return '{}: {}'.format(self.path, self.redirect)
