@@ -1,5 +1,7 @@
 DEFAULT_SETTINGS = {
-    'AUTOCONFIG_INDEX_VIEW': 'redirect_base',
+    'AUTOCONFIG_URL_PREFIXES': {
+        'shorty': '',
+    },
 }
 
 SETTINGS = {
