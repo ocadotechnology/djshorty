@@ -1,0 +1,24 @@
+{% extend 'nuit/base.html' topbar=True %}
+{% load shorty %}
+
+{% block title %}Redirect Preview{% endblock %}
+
+{% block content %}
+
+<div class='row'>
+
+    <div class='columns small-12 medium-6 medium-push-3'>
+
+        <h2>You're being redirected!</h2>
+
+        <p>The link you've clicked is redirecting you to the following URL:</p>
+
+        <p><a href='{% url 'redirect' slug=url.path %}'>{{url.redirect}}</a></p>
+
+        <a href='{% url 'redirect' slug=url.path %}' class='button expand'>Continue</a>
+
+    </div>
+
+</div>
+
+{% endblock %}

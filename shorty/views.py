@@ -21,6 +21,12 @@ def do_redirect(request, slug=None):
         if not slug:
             return HttpResponseRedirect(reverse('home'))
         raise Http404
+
+    if 'preview' in request.GET or 'p' in request.GET:
+        return render(request, 'shorty/preview.html', {
+            'url': short_url,
+        })
+
     return HttpResponseRedirect(short_url.redirect)
 
 
