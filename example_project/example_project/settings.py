@@ -57,5 +57,7 @@ try:
 except ImportError:
     pass
 
+SHORTY_EXTERNAL_FLAG = True
+
 from django_autoconfig import autoconfig
 autoconfig.configure_settings(globals())

@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.utils.safestring import mark_safe
 
 from .models import ShortURL
+from .app_settings import EXTERNAL_FLAG
 
 
 class ShortURLForm(forms.ModelForm):
@@ -30,3 +31,5 @@ class ShortURLForm(forms.ModelForm):
     class Meta:
         model = ShortURL
         fields = ['redirect', 'path']
+        if EXTERNAL_FLAG:
+            fields.append('external')

@@ -24,6 +24,7 @@ class ShortURL(models.Model):
     redirect = models.URLField()
     user = models.ForeignKey(User, related_name='short_urls')
     created = models.DateTimeField(auto_now_add=True)
+    external = models.BooleanField(default=False, help_text='Should this short link be available outside the company\'s network?')
 
     class Meta:
         ordering = ('-created', )

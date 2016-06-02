@@ -9,6 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import ShortURL
 from .forms import ShortURLForm
+from .app_settings import EXTERNAL_FLAG, IS_EXTERNAL_REQUEST_FUNC
 
 
 def do_redirect(request, slug=None):
@@ -26,6 +27,10 @@ def do_redirect(request, slug=None):
         return render(request, 'shorty/preview.html', {
             'url': short_url,
         })
+
+
+    if EXTERNAL_FLAG and not short_url.external and IS_EXTERNAL_REQUEST_FUNC(request):
+        raise Http404
 
     return HttpResponseRedirect(short_url.redirect)
 
@@ -64,6 +69,7 @@ def home(request):
         short_urls = paginator.page(paginator.num_pages)
 
     return render(request, 'shorty/home.html', {
+        'EXTERNAL_FLAG': EXTERNAL_FLAG,
         'path': path,
         'form': form,
         'short_urls': short_urls,

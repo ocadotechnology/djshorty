@@ -26,6 +26,15 @@
         padding-right: 0.5em;
     }
 
+    label[for=id_external] {
+        float: right;
+    }
+
+    label[for=id_external]:first-child {
+        float: left;
+        line-height: 2.3rem;
+    }
+
 </style>
 
 {% endblock %}
@@ -59,13 +68,13 @@
     <div class='columns small-12 medium-6 medium-push-3'>
 
         <form method='post' style='margin: 2em 0;'>
-            <div class='row collapse'>
+            <div class='row'>
                 <div class='columns'>
                     <h2>Shorten a URL</h2>
                 </div>
             </div>
             {% if request.previous_short_urls %}
-            <div class='row collapse'>
+            <div class='row'>
                 <div class='columns'>
                     <div class='panel callout alert'>
                         <p><i class='fi-alert'></i> That URL has already been shortened to:</p>
@@ -80,12 +89,19 @@
                 </div>
             </div>
             {% endif %}
-            <div class='row collapse'>
+            <div class='row'>
                 <div class='columns form-wrapper'>
-                    {% foundation_form form collapse_container=True %}
-                        redirect {'show_label': False}
-                        path {'show_label': False, 'prefix': '{{redirect_base}}', 'prefix_small': 6}
-                    {% end_foundation_form %}
+                    {% if EXTERNAL_FLAG %}
+                        {% foundation_form form %}
+                            redirect {'show_label': False}
+                            path {'show_label': False, 'prefix': '{{redirect_base}}', 'prefix_small': 6, 'small': 12, 'medium': 9}; external {'switch': True}
+                        {% end_foundation_form %}
+                    {% else %}
+                        {% foundation_form form %}
+                            redirect {'show_label': False}
+                            path {'show_label': False, 'prefix': '{{redirect_base}}', 'prefix_small': 6}
+                        {% end_foundation_form %}
+                    {% endif %}
                 </div>
             </div>
             <div class='row'>
@@ -95,9 +111,12 @@
             </div>
         </form>
 
+        <div class='row'>
+            <div class='columns'>
+
         {% if path %}
             <div class='alert-box success'>Your URL has been shortened!</div>
-            <div class='row collapse'>
+            <div class='row'>
                 <div class='columns small-11'>
                     <input type='text' value='{{path}}' id='id_url' />
                 </div>
@@ -114,6 +133,7 @@
                 <tr>
                     <th colspan='2'>Short URL</th>
                     <th>Created</th>
+                    {% if EXTERNAL_FLAG %}<th style='width: 1rem'>Available Externally</th>{% endif %}
                     <th class='icon'>&nbsp;</th>
                 </tr>
             </thead>
@@ -130,6 +150,11 @@
                     <td>
                         {{url.created|date:'d/m/Y'}} {{url.created|time:'H:i'}}
                     </td>
+                    {% if EXTERNAL_FLAG %}
+                    <td>
+                        <i class='fi fi-{% if url.external %}check{% else %}x{% endif %}'></i>
+                    </td>
+                    {% endif %}
                     <td class='icon'>
                         <form method='post' action='{% url 'delete' %}'>
                             {% csrf_token %}
@@ -145,6 +170,9 @@
         {% pagination_menu short_urls %}
 
         {% endif %}
+
+    </div>
+</div>
 
     </div>
 
