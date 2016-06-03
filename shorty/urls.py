@@ -6,7 +6,7 @@ from . import app_settings
 
 urlpatterns = [
     url(r'^$', views.do_redirect, name='redirect_base'),
-    url(r'^(?P<slug>[-_\w]+)$', views.do_redirect, name='redirect'),
+    url(r'^(?P<slug>[-_\w]+)/?$', views.do_redirect, name='redirect'),
 ]
 
 if app_settings.ADMIN_ENABLED:

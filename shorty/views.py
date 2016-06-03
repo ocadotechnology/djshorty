@@ -9,13 +9,15 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import ShortURL
 from .forms import ShortURLForm
-from .app_settings import EXTERNAL_FLAG, IS_EXTERNAL_REQUEST_FUNC
+from .app_settings import EXTERNAL_FLAG
 
 
 def do_redirect(request, slug=None):
+
     path_slug = slug
     if not path_slug:
         path_slug = request.META['HTTP_HOST'].split('.', 1)[0]
+
     try:
         short_url = ShortURL.objects.get(path=path_slug)
     except ShortURL.DoesNotExist:
@@ -23,14 +25,13 @@ def do_redirect(request, slug=None):
             return HttpResponseRedirect(reverse('home'))
         raise Http404
 
+    if EXTERNAL_FLAG and not short_url.external and not request.user.is_authenticated():
+        return login_required(lambda _: None)(request)
+
     if 'preview' in request.GET or 'p' in request.GET:
         return render(request, 'shorty/preview.html', {
             'url': short_url,
         })
-
-
-    if EXTERNAL_FLAG and not short_url.external and IS_EXTERNAL_REQUEST_FUNC(request):
-        raise Http404
 
     return HttpResponseRedirect(short_url.redirect)
 
