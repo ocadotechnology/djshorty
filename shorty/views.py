@@ -21,7 +21,10 @@ def check_initial_redirect(request, path_slug):
     canonical_scheme, canonical_netloc = urlparse(CANONICAL_DOMAIN)[:2]
     current_scheme, current_netloc = urlparse(request.build_absolute_uri())[:2]
     if not (current_scheme == canonical_scheme and current_netloc == canonical_netloc):
-        return '{}/{}'.format(CANONICAL_DOMAIN, path_slug)
+        qs = request.META['QUERY_STRING']
+        if qs:
+            qs = '?{}'.format(qs)
+        return '{}/{}{}'.format(CANONICAL_DOMAIN, path_slug, qs)
 
 
 def do_redirect(request, slug=None):
