@@ -100,6 +100,13 @@ class RedirectViewTestCase(UserTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertInHTML("<a href='/google'>http://www.google.com</a>", response.content)
 
+    @mock.patch.object(views, 'CANONICAL_DOMAIN', 'http://shorty.example.com')
+    def test_preview_preseved_over_canonical_redirect(self):
+        '''Unauthenticated clients, no external access, canonical domain'''
+        # Not matching domain should redirect to matching domain
+        response = self.client.get('/google?preview=True', HTTP_HOST='shorty1.example.com')
+        self.assertRedirects(response, 'http://shorty.example.com/google?preview=True', fetch_redirect_response=False)
+
 
 class AuthenticatedUITestCase(UserTestCase):
 
