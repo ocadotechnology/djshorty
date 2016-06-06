@@ -1,2 +1,4 @@
 graft shorty/static
 graft shorty/templates
+include LICENSE
+include NOTICE

@@ -24,4 +24,7 @@ setup(
     tests_require=test_dependencies,
     test_suite='setuptest.setuptest.SetupTestSuite',
     include_package_data=True,
+    classifiers=[
+        'License :: OSI Approved :: Apache Software License',
+    ],
 )
