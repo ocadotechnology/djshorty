@@ -28,9 +28,13 @@ def do_redirect(request, slug=None):
 
     path_slug = slug
     if not path_slug:
-        path_slug = request.META['HTTP_HOST'].split('.', 1)[0]
+        try:
+            path_slug = request.META['HTTP_HOST'].split('.', 1)[0]
+        except KeyError:
+            return HttpResponseBadRequest()
 
     initial_redirect = check_initial_redirect(request, path_slug)
+
     if initial_redirect:
         return HttpResponseRedirect(initial_redirect)
 
@@ -100,7 +104,7 @@ def delete(request):
     try:
         url = ShortURL.objects.get(pk=request.POST['id_short_url'], user=request.user)
     except (ShortURL.DoesNotExist, KeyError):
-        return HttpResponseBadRequest
+        return HttpResponseBadRequest()
     url.delete()
     return HttpResponseRedirect(reverse('home'))
 

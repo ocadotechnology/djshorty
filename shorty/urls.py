@@ -11,6 +11,6 @@ urlpatterns = [
 
 if app_settings.ADMIN_ENABLED:
     urlpatterns = [
-        url(r'^delete/$', views.delete, name='delete'),
         url(r'^admin/$', views.home, name='home'),
+        url(r'^admin/delete/$', views.delete, name='delete'),
     ] + urlpatterns

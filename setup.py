@@ -9,6 +9,7 @@ dependencies=[
 ]
 test_dependencies=[
     'django-setuptest',
+    'mock',
 ]
 
 setup(

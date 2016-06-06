@@ -3,3 +3,5 @@ example_project/example_project/static
 *.swp
 *.pyc
 local_settings.py
+*.egg
+*.eggs
