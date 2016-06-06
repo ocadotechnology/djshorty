@@ -58,7 +58,6 @@ except ImportError:
     pass
 
 SHORTY_EXTERNAL_FLAG = True
-SHORTY_CANONICAL_DOMAIN = 'http://10.254.253.10:8000'
 
 from django_autoconfig import autoconfig
 autoconfig.configure_settings(globals())
