@@ -30,5 +30,6 @@ deploy:
     secure: "eN4q5C00SqUYbmyeHwzacqu9R/FOZnxnPXHE8s3cYsuPeKiq0l3sdm+j6f4PrOslKO16lPqJUtPERJW4G+jsdGEC+l8n8WOsB6xIHkJSRL2QlGvVEv/9GgFrTzYmjmzDY1k8+3Bz/kTf8jfdEXzxthsSsbIEfloAwT+ff0v22tVa3AybnKNwHwznTCme0T5GfgbbIBOncc1EWFQrsvuc/J9EMCz8J8Mw2QDIvludzlb9/Yq4mOmlNGvn1CiYJzaDvhRIRhJ3PCK3Jvf/71Err1ERXxxFKmJUyL9j8FjlPHQSbmkjjqzpIdpSpmX3U8yzXPr7FKi+9QzoXGpwa1rmMmgnFyS+qhnwEIth97+BFsDiF2w8oDngFPfh9AFvhnU7SOiSmbSD1sRtC4rb+vVMvqm7BfZUxhpD6WBIw/nAxU5Juhumi+l6hyeyKPHqVFX5s2yp1mFa1kKN8R8XnPtgQbu5G+S++zKZLKEDyN0vIc4ze0/GnQFEr3HY57M0KkIc9LwjRjnZn526O7aLLCFY4xMRf78CkBB2nbF8deUwAqQGYj1ddgo3NquVCu5g+mA41hmsQmkVetIA34iB9XoCtBD9H8GT4ExDZa/QBd41pOqOHTYmwGC3NwZSiFooCuKZke0Fdwi2FmlHM69NBzaorKCl0SNKKwsJBo5gFGjCj50="
   distributions: "bdist_wheel sdist"
   on:
+    all_branches: true
     condition: $DJANGO_VERSION = ">=1.9, < 1.10"
     repo: ocadotechnology/djshorty
