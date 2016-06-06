@@ -5,11 +5,23 @@ from django.http import HttpResponseRedirect, HttpResponseBadRequest, Http404
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, NoReverseMatch
+from django.utils.six.moves.urllib.parse import urlparse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import ShortURL
 from .forms import ShortURLForm
-from .app_settings import EXTERNAL_FLAG
+from .app_settings import EXTERNAL_FLAG, CANONICAL_DOMAIN
+
+
+def check_initial_redirect(request, path_slug):
+
+    if not CANONICAL_DOMAIN:
+        return None
+
+    canonical_scheme, canonical_netloc = urlparse(CANONICAL_DOMAIN)[:2]
+    current_scheme, current_netloc = urlparse(request.build_absolute_uri())[:2]
+    if not (current_scheme == canonical_scheme and current_netloc == canonical_netloc):
+        return '{}/{}'.format(CANONICAL_DOMAIN, path_slug)
 
 
 def do_redirect(request, slug=None):
@@ -17,6 +29,10 @@ def do_redirect(request, slug=None):
     path_slug = slug
     if not path_slug:
         path_slug = request.META['HTTP_HOST'].split('.', 1)[0]
+
+    initial_redirect = check_initial_redirect(request, path_slug)
+    if initial_redirect:
+        return HttpResponseRedirect(initial_redirect)
 
     try:
         short_url = ShortURL.objects.get(path=path_slug)
