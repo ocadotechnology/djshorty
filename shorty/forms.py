@@ -8,6 +8,11 @@ from .app_settings import EXTERNAL_FLAG
 
 
 class ShortURLForm(forms.ModelForm):
+
+    RESTRICTED_PATHS = (
+        'admin',
+    )
+
     redirect = forms.URLField(required=True, widget=forms.URLInput(attrs={'placeholder': 'Enter a URL'}))
     path = forms.SlugField(required=False, widget=forms.TextInput(attrs={'placeholder': 'short-url'}))
     override_existing = forms.CharField(required=False, widget=forms.HiddenInput())
@@ -16,6 +21,14 @@ class ShortURLForm(forms.ModelForm):
         self.request = request
         return super(ShortURLForm, self).__init__(*args, **kwargs)
 
+    def clean_path(self):
+        path = self.cleaned_data['path']
+
+        if path in self.RESTRICTED_PATHS:
+            raise forms.ValidationError('You cannot use that path. Please specify another.')
+
+        return path
+
     def clean_override_existing(self):
         redirect = self.cleaned_data['redirect']
         override_existing = self.cleaned_data['override_existing']
@@ -23,6 +36,8 @@ class ShortURLForm(forms.ModelForm):
         if override_existing != '1':
             short_urls = ShortURL.objects.filter(redirect=redirect)
             if short_urls:
+                self.data = self.data.copy()
+                self.data['override_existing'] = 1
                 self.request.previous_short_urls = short_urls
                 raise forms.ValidationError('That URL has been shortened previously.')
 

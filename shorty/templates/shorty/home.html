@@ -1,63 +1,17 @@
 {% extend 'nuit/base.html' topbar=True %}
 {% load shorty %}
+{% load static %}
 
 {% block title %}URL Shortener{% endblock %}
 
 {% block css %}
-
-<style>
-
-    td.icon, th.icon {
-        width: 1em;
-    }
-
-    .icon.button {
-        margin-bottom: 0;
-        padding: 0.3rem 0.5rem;
-        opacity: 0.7;
-    }
-
-    .icon.button:hover {
-        opacity: 1;
-    }
-
-    span.prefix {
-        text-align: right;
-        padding-right: 0.5em;
-    }
-
-    label[for=id_external] {
-        float: right;
-    }
-
-    label[for=id_external]:first-child {
-        float: left;
-        line-height: 2.3rem;
-    }
-
-</style>
-
+    <link rel='stylesheet' type='text/css' href='{% static 'shorty.css' %}' />
 {% endblock %}
 
 {% block scripts %}
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.8/clipboard.min.js'></script>
-
-<script type='text/javascript'>
-
-    $(document).ready(function() {
-
-        $('#id_redirect').focus();
-
-        new Clipboard('.clipboard.button');
-
-        {% if request.previous_short_urls %}
-        $('#id_override_existing').val('1');
-        {% endif %}
-
-    });
-
-</script>
+<script src='{% static 'shorty.js' %}'></script>
 
 {% endblock %}
 
@@ -67,7 +21,7 @@
 
     <div class='columns small-12 medium-6 medium-push-3'>
 
-        <form method='post' style='margin: 2em 0;'>
+        <form method='post'>
             <div class='row'>
                 <div class='columns'>
                     <h2>Shorten a URL</h2>
@@ -128,12 +82,12 @@
         {% endif %}
 
         {% if request.user.short_urls.exists %}
-        <table style='width: 100%'>
+        <table>
             <thead>
                 <tr>
                     <th colspan='2'>Short URL</th>
                     <th>Created</th>
-                    {% if EXTERNAL_FLAG %}<th style='width: 1rem'>Available Externally</th>{% endif %}
+                    {% if EXTERNAL_FLAG %}<th class='icon'>Available Externally</th>{% endif %}
                     <th class='icon'>&nbsp;</th>
                 </tr>
             </thead>

@@ -1,0 +1,35 @@
+td.icon, th.icon {
+    width: 1em;
+}
+
+.icon.button {
+    margin-bottom: 0;
+    padding: 0.3rem 0.5rem;
+    opacity: 0.7;
+}
+
+.icon.button:hover {
+    opacity: 1;
+}
+
+span.prefix {
+    text-align: right;
+    padding-right: 0.5em;
+}
+
+label[for=id_external] {
+    float: right;
+}
+
+label[for=id_external]:first-child {
+    float: left;
+    line-height: 2.3rem;
+}
+
+form {
+    margin: 2em 0;
+}
+
+table {
+    width: 100%;
+}
