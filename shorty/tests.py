@@ -94,11 +94,9 @@ class RedirectViewTestCase(UserTestCase):
     def test_preview(self):
         '''Test preview domain'''
         response = self.client.get('/google?preview=True')
-        self.assertEqual(response.status_code, 200)
-        self.assertInHTML("<a href='/google'>http://www.google.com</a>", response.content)
+        self.assertContains(response, "<a href='/google'>http://www.google.com</a>", html=True)
         response = self.client.get('/google?p=True')
-        self.assertEqual(response.status_code, 200)
-        self.assertInHTML("<a href='/google'>http://www.google.com</a>", response.content)
+        self.assertContains(response, "<a href='/google'>http://www.google.com</a>", html=True)
 
     @mock.patch.object(views, 'CANONICAL_DOMAIN', 'http://shorty.example.com')
     def test_preview_preseved_over_canonical_redirect(self):
