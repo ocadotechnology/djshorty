@@ -8,14 +8,10 @@ python:
   - 3.5
 matrix:
   allow_failures:
-  - python: 3.5
-    env: DJANGO_VERSION=">=1.9, < 1.10"
   - python: 2.7
     env: DJANGO_VERSION=">=1.10a1, < 1.11"
   - python: 3.5
     env: DJANGO_VERSION=">=1.10a1, < 1.11"
-  - python: 3.5
-    env: DJANGO_VERSION=">=1.8, < 1.9"
   fast_finish: true
 install:
   - pip install gitversion
