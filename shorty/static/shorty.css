@@ -26,7 +26,7 @@ label[for=id_external]:first-child {
     line-height: 2.3rem;
 }
 
-form {
+form.new {
     margin: 2em 0;
 }
 
