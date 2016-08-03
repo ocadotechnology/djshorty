@@ -29,11 +29,12 @@ class ShortURLForm(forms.ModelForm):
 
         return path
 
-    def clean_override_existing(self):
-        redirect = self.cleaned_data['redirect']
-        override_existing = self.cleaned_data['override_existing']
+    def clean(self):
+        cleaned_data = super(ShortURLForm, self).clean()
+        redirect = cleaned_data.get('redirect')
+        override_existing = cleaned_data.get('override_existing')
 
-        if override_existing != '1':
+        if override_existing != '1' and redirect:
             short_urls = ShortURL.objects.filter(redirect=redirect)
             if short_urls:
                 self.data = self.data.copy()
@@ -41,7 +42,7 @@ class ShortURLForm(forms.ModelForm):
                 self.request.previous_short_urls = short_urls
                 raise forms.ValidationError('That URL has been shortened previously.')
 
-        return override_existing
+        return cleaned_data
 
     class Meta:
         model = ShortURL

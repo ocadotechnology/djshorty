@@ -2,6 +2,7 @@
 
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 import mock
 
@@ -121,3 +122,10 @@ class AuthenticatedUITestCase(UserTestCase):
         self.assertRedirects(response, '/admin/', fetch_redirect_response=False)
         response = self.client.post('/admin/delete/', {'id_short_url': id_short_url})
         self.assertEqual(response.status_code, 400)
+
+    def test_create_short_url(self):
+        form_url = reverse('home')
+        response = self.client.post(form_url, {
+            'redirect': 'http://example.com',
+        })
+        self.assertRedirects(response, form_url, fetch_redirect_response=False)
