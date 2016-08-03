@@ -21,7 +21,7 @@
 
     <div class='columns small-12 medium-6 medium-push-3'>
 
-        <form method='post'>
+        <form method='post' class='new'>
             <div class='row'>
                 <div class='columns'>
                     <h2>Shorten a URL</h2>
@@ -99,7 +99,9 @@
                     </td>
                     <td>
                         <a href='{% url 'redirect' slug=url.path %}'>{% build_short_url url.path %}</a>
-                        <br /><small>{{url.redirect}}</small>
+                        <br /><small title='{{url.redirect}}'>
+                            {{url.redirect|truncatechars:60}}
+                        </small>
                     </td>
                     <td>
                         {{url.created|date:'d/m/Y'}} {{url.created|time:'H:i'}}

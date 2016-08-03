@@ -1,5 +1,6 @@
 '''Shorty Models'''
 from django.db import models
+from django.core import validators
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
@@ -21,7 +22,7 @@ def random_slug():
 
 class ShortURL(models.Model):
     path = models.SlugField(unique=True, error_messages={'unique': 'This short URL is already in use; please choose something different, or leave blank for a random URL',})
-    redirect = models.URLField()
+    redirect = models.TextField(validators=[validators.URLValidator()])
     user = models.ForeignKey(User, related_name='short_urls')
     created = models.DateTimeField(auto_now_add=True)
     external = models.BooleanField(default=False, help_text='Should this short link be available outside the company\'s network?')
