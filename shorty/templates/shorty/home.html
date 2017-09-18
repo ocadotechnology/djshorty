@@ -34,7 +34,7 @@
                         <p><i class='fi-alert'></i> That URL has already been shortened to:</p>
                         <ul>
                             {% for url in request.previous_short_urls %}
-                                <li><a href='{% build_short_url url.path %}'>{% build_short_url url.path %}</a> </li>
+                                <li><a href='{% build_short_url url.path %}'>{% build_short_url url.path %}</a> (created by {{ url.user }})</li>
                             {% endfor %}
                         </ul>
                         <p>Are you sure you wish to create a new short URL?</p>
@@ -80,6 +80,8 @@
             </div>
             <br />
         {% endif %}
+
+        <p>Showing only your URLs. <a href='{% url 'all' %}'>View all URLs.</a></p>
 
         {% if request.user.short_urls.exists %}
         <table>

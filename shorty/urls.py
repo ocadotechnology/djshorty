@@ -12,5 +12,6 @@ urlpatterns = [
 if app_settings.ADMIN_ENABLED:
     urlpatterns = [
         url(r'^admin/$', views.home, name='home'),
+        url(r'^admin/all/$', views.ListView.as_view(), name='all'),
         url(r'^admin/delete/$', views.delete, name='delete'),
     ] + urlpatterns
