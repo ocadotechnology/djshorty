@@ -1,0 +1,46 @@
+{% extend 'nuit/generic/list.html' base='shorty/home.html' rightmenu=True %}
+{% load shorty %}
+
+{% block title %}All Short URLs{% endblock %}
+
+{% block object_list %}
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan='2'>Short URL</th>
+                <th>Created Date</th>
+                <th>Created By</th>
+                {% if EXTERNAL_FLAG %}<th class='icon'>Available Externally</th>{% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for url in object_list %}
+                <tr>
+                    <td class='icon'>
+                        <button class='clipboard icon tiny radius button' data-clipboard-text='{% build_short_url url.path %}' data-tooltip title='Copy to clipboard'><i class='fi-paperclip'></i></button>
+                    </td>
+                    <td>
+                        <a href='{% url 'redirect' slug=url.path %}'>{% build_short_url url.path %}</a>
+                        <br />
+                        <small title='{{ url.redirect }}'>
+                            {{ url.redirect|truncatechars:120 }}
+                        </small>
+                    </td>
+                    <td>
+                        {{ url.created|date:'d/m/Y' }} {{ url.created|time:'H:i' }}
+                    </td>
+                    <td>
+                        {{ url.user }}
+                    </td>
+                    {% if EXTERNAL_FLAG %}
+                        <td>
+                            <i class='fi fi-{% if url.external %}check{% else %}x{% endif %}'></i>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

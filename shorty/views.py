@@ -6,7 +6,10 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.utils.six.moves.urllib.parse import urlparse
+from django.utils.decorators import method_decorator
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from nuit.views import SearchableListView
 
 from .models import ShortURL
 from .forms import ShortURLForm
@@ -99,6 +102,18 @@ def home(request):
         'short_urls': short_urls,
         'redirect_base': request.build_absolute_uri(reverse('redirect_base')),
     })
+
+
+class ListView(
+    SearchableListView,
+):
+    model = ShortURL
+    paginate_by = 100
+    search_fields = ('redirect', 'path', 'user__username', 'user__first_name', 'user__last_name')
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ListView, self).dispatch(*args, **kwargs)
 
 
 @login_required
